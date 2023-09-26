@@ -1,7 +1,7 @@
 import "./App.css";
 import Box from "./components/Box/Box";
 import UploadArea from "./components/UploadArea/UploadArea";
-// import PersonalInformation from "./components/PersonalInformation/PersonalInformation";
+import PersonalInformation from "./components/PersonalInformation/PersonalInformation";
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         </div>
       </Box>
       <Box title={"Personal Information"}>
-        {/* <PersonalInformation /> */}
+        <PersonalInformation />
       </Box>
     </>
   );
