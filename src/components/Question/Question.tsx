@@ -1,13 +1,11 @@
-// Question.tsx
 import { useState } from "react";
 import { Input, Select, Checkbox } from "antd";
 import { QuestionsTypeOptions } from "./Items";
-import "./Question.css";
 import CloseIcon from "../../assets/icons/CloseIcon";
-import { PersonalQuestion } from "../../types/data";
 import OrderedList from "../../assets/icons/OrderedList";
 import PlusIcon from "../../assets/icons/PlusIcon";
-
+import { QuestionTemplate } from "../../types/types";
+import "./Question.css";
 
 const Question = ({
   question,
@@ -15,10 +13,10 @@ const Question = ({
   onDeleteQuestion,
   onSave,
 }: {
-  question: PersonalQuestion;
-  onQuestionChange: (question: PersonalQuestion) => void;
+  question: QuestionTemplate;
+  onQuestionChange: (question: QuestionTemplate) => void;
   onDeleteQuestion: () => void;
-  onSave?: () => void,
+  onSave?: () => void;
 }) => {
   const typeOptions = QuestionsTypeOptions.map((questionType) => ({
     value: questionType,
@@ -54,17 +52,15 @@ const Question = ({
 
   const handleSaveClick = () => {
     onQuestionChange(localQuestion);
-    onSave!()
+    onSave!();
   };
 
   const handleDeleteClick = () => {
     onDeleteQuestion();
   };
 
-
-
   return (
-    <div>
+    <>
       <label>
         <h3>Type</h3>
         <Select
@@ -89,10 +85,8 @@ const Question = ({
             paddingInline: "24px",
           }}
           placeholder="Type here"
-          value={localQuestion.question || ""}
-          onChange={(e) =>
-            setLocalQuestion({ ...localQuestion, question: e.target.value })
-          }
+          value={null}
+          onChange={null}
         />
       </label>
       {localQuestion.type === "Dropdown" && (
@@ -143,7 +137,7 @@ const Question = ({
           Save
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
