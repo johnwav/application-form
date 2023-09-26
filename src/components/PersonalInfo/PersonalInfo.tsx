@@ -1,17 +1,19 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import './PersonalInfo.css'
+import "./PersonalInfo.css";
 import { Checkbox, Switch } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setPersonalInformation as setPersonalInfo } from "../../data/dataSlice";
+import { setPersonalInformation as setPersonalInfo, setPersonalQuestions } from "../../data/dataSlice";
+import PlusIcon from "../../assets/icons/PlusIcon";
+import AddQuestion from "../AddQuestion/AddQuestion";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
+  const [showQuestion, setShowQuestion] = useState(false);
   const personalInfo = useSelector(
     (state: RootState) => state.data.data.attributes.personalInformation
   );
-
   const [personalInformation, setPersonalInformation] = useState(personalInfo);
   const info = [
     "phoneNumber",
@@ -21,7 +23,6 @@ const PersonalInfo = () => {
     "dateOfBirth",
     "gender",
   ];
-
   const handleCheckboxChange = (attributeName, updatedData) => {
     setPersonalInformation((prev) => ({
       ...prev,
@@ -43,12 +44,26 @@ const PersonalInfo = () => {
     dispatch(setPersonalInfo(personalInformation));
   };
 
-  useEffect(() => {
-    console.log(personalInformation);
-  }, [personalInformation]);
+  // Callback function to handle saving a question
+  const handleSaveQuestion = (newQuestion) => {
+    // Push the newQuestion to personalInformation state
+    setPersonalInformation((prev) => ({
+      ...prev,
+      personalQuestions: [...prev.personalQuestions, newQuestion],
+    }));
+    // Close the AddQuestion component
+    setShowQuestion(false);
+    dispatch(setPersonalQuestions(newQuestion))
+  };
+
+  // useEffect(() => {
+  //   console.log(personalInformation);
+  // }, [personalInformation]);
+
+  console.log(personalInfo)
 
   return (
-    <div>
+    <>
       <div
         style={{
           padding: "30px",
@@ -106,8 +121,24 @@ const PersonalInfo = () => {
             </div>
           </label>
         ))}
+        {showQuestion && <AddQuestion onSaveQuestion={handleSaveQuestion} />}
+        <label
+          style={{
+            marginTop: "50px",
+            cursor: "pointer",
+          }}
+        >
+          <div
+            onClick={() => setShowQuestion(true)}
+            style={{ display: "flex", gap: "20px" }}
+            className="add"
+          >
+            <PlusIcon />
+            <strong>Add a Question</strong>
+          </div>
+        </label>
       </div>
-    </div>
+    </>
   );
 };
 
