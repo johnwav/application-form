@@ -1,7 +1,10 @@
 import { ChangeEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 import "./UploadArea.css";
+import { setCoverImage } from "../../data/dataSlice";
 
 const UploadArea = () => {
+  const dispatch = useDispatch()
   const [image, setImage] = useState<File | null>();
   const [, setCdnUrl] = useState<string | null>(null);
 
@@ -23,7 +26,7 @@ const UploadArea = () => {
 
         // Set the CDN URL in state
         setCdnUrl(cdnImageUrl);
-
+        dispatch(setCoverImage(cdnImageUrl))
         console.log("Uploaded to CDN:", cdnImageUrl);
       } catch (error) {
         console.error("Failed to upload image:", error);
@@ -38,7 +41,7 @@ const UploadArea = () => {
       {image ? (
         <div className="img-area" style={{ position: "relative" }}>
           <img
-            style={{ objectFit: "contain", width: "100%", height: "" }}
+            style={{ objectFit: "contain", width: "100%", height: "100%" }}
             src={URL.createObjectURL(image)}
             alt="image"
           />
