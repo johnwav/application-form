@@ -10,6 +10,5 @@ export default function generateUniqueId() {
   // Combine timestamp and random number to create a unique ID
   const uniqueId = timestamp + random;
 
-
-  return uniqueId.toString;
+  return { uniqueId };
 }
