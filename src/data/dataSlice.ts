@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PersonalInformation, PersonalInformationTemplate } from '../types/types';
 import {
   ApplicationFormState,
-  PersonalInformation,
+  // PersonalInformation,
   Profile,
   QuestionTemplate,
-} from '../types/types'; 
+} from '../types/types';
 
 const initialState: ApplicationFormState = {
   data: {
@@ -40,44 +41,6 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
-    setPersonalInfo: (
-      state,
-      action: PayloadAction<Partial<ApplicationFormAttributes['personalInformation']>>
-    ) => {
-      // Update the personalInformation field with the payload data
-      state.personalInformation = {
-        ...state.personalInformation,
-        ...action.payload,
-      };
-    },
-    addPersonalQuestion: (
-      state,
-      action: PayloadAction<QuestionTemplate>
-    ) => {
-      // Add a new personal question to the array
-      state.personalQuestions.push(action.payload);
-    },
-    editPersonalQuestion: (
-      state,
-      action: PayloadAction<QuestionTemplate>
-    ) => {
-      // Find the question by ID and update it
-      const index = state.personalQuestions.findIndex(
-        (question) => question.id === action.payload.id
-      );
-      if (index !== -1) {
-        state.personalQuestions[index] = action.payload;
-      }
-    },
-    deletePersonalQuestion: (
-      state,
-      action: PayloadAction<string>
-    ) => {
-      // Delete a personal question by ID
-      state.personalQuestions = state.personalQuestions.filter(
-        (question) => question.id !== action.payload
-      );
-    },
     setId: (state, action: PayloadAction<string>) => {
       state.data.id = action.payload;
     },
@@ -93,6 +56,10 @@ const dataSlice = createSlice({
     setCustomisedQuestion: (state, action: PayloadAction<QuestionTemplate[]>) => {
       state.data.attributes.customisedQuestions = action.payload;
     },
+    setPersonalInformation: (state, action: PayloadAction<PersonalInformation>) => {
+      state.data.attributes.personalInformation = action.payload
+    },
+
   },
 });
 
@@ -103,10 +70,7 @@ export const {
   setCoverImage,
   setProfile,
   setCustomisedQuestion,
-  setPersonalInfo,
-  addPersonalQuestion,
-  editPersonalQuestion,
-  deletePersonalQuestion
+  setPersonalInformation,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;
