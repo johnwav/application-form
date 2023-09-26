@@ -1,0 +1,46 @@
+.dropdown {
+    /* padding-block: 20px; */
+    /* padding-inline: 24px; */
+    height: 68px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    color: var(--grey);
+    font-family: Poppins;
+    font-size: 14px;
+  }Question
+  
+  .dropdown-item {
+    /* padding-inline: 24px; */
+    padding-block: 6px;
+  }
+
+  .btn-container {
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--red);
+    cursor: pointer;
+  }
+
+  .save-btn {
+   outline: none;
+   background: var(--green);
+   padding: 17px;
+   color: white;
+  }
+
+  .choice-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
