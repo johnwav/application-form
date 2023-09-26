@@ -1,0 +1,17 @@
+.input-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 512px;
+  height: 210px;
+}
+
+.img-area {
+  width: 512px;
+  height: 210px;
+}
+
+.subtext {
+  color: var(--grey);
+}

@@ -1,0 +1,14 @@
+.box {
+    width: 595px;
+    box-shadow: 3px 3px 14px 0px rgba(190, 190, 190, 0.30);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.title {
+    background-color: var(--blue);
+    padding-left: 32px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+}

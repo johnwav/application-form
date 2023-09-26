@@ -1,0 +1,51 @@
+.navbar {
+  width: 100%;
+  height: 130px;
+  box-shadow: 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  /* background-color: var(--background); */
+  display: flex;
+  align-items: center;
+}
+
+.navbar-item {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.navbar-item:last-child {
+  border-left: 1px solid var(--grey);
+  height: 78px;
+}
+
+.active {
+  background: var(--green);
+  color: white;
+}
+
+.navbar-tab {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 78px;
+  justify-content: center;
+}
+
+.indicator {
+  position: absolute;
+  right: -20px;
+  top: 15px;
+}
+
+.navbar-tab:hover .indicator {
+  opacity: 1;
+}
+
+.active .indicator {
+  opacity: 1;
+}
