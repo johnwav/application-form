@@ -40,10 +40,10 @@ const UploadArea = () => {
           <img
             style={{ objectFit: "contain", width: "100%", height: "" }}
             src={URL.createObjectURL(image)}
-            alt=""
+            alt="image"
           />
           <div
-            style={{ position: "absolute",  top:'-45px' ,right: '0' }}
+            style={{ position: "absolute", top: "-45px", right: "0" }}
             onClick={() => setImage(null)}
           >
             Delete
@@ -75,10 +75,12 @@ const UploadArea = () => {
 };
 
 // Simulate uploading to a CDN (replace with actual CDN upload logic)
-const uploadImageToCDN = async (file: File): Promise<{ url: string }> => {
+const uploadImageToCDN = async (
+  file: File
+): Promise<{ file: File; url: string }> => {
   // Simulate an API request to your CDN endpoint
   await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
-  return { url: "https://example.com/cdn/image.jpg" }; // Replace with actual CDN URL
+  return { file: file, url: "https://example.com/cdn/image.jpg" }; // Replace with actual CDN URL
 };
 
 export default UploadArea;
