@@ -1,10 +1,10 @@
-import { PersonalQuestion } from "../../types/data";
+import { QuestionTemplate } from "../../types/types";
 
 const SavedQuestion = ({
   question,
   onEdit,
 }: {
-  question: PersonalQuestion;
+  question: QuestionTemplate;
   onEdit: () => void;
 }) => {
   return (
