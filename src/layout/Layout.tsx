@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <br />
       <br />
       <main style={{ marginLeft: "118px" }}>
-        <div style={{ paddingTop: "112px", paddingInlineStart: "70px" }}>
+        <div style={{ paddingInlineStart: "70px" }}>
           {children}
         </div>
       </main>

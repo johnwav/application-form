@@ -7,8 +7,8 @@ import UploadArea from "./components/UploadArea/UploadArea";
 
 function App() {
   return (
-    <>
-        <UploadArea />
+    <div className="app">
+      <UploadArea />
       <Box title={"Personal Information"}>
         <PersonalInfo />
       </Box>
@@ -18,7 +18,7 @@ function App() {
       <Box title={"Addtional Questions"}>
         <CustomQuestions />
       </Box>
-    </>
+    </div>
   );
 }
 
