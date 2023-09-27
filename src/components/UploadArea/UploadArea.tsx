@@ -2,9 +2,11 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import "./UploadArea.css";
 import { setCoverImage } from "../../data/dataSlice";
+import Box from "../Box/Box";
+import CloseIcon from "../../assets/icons/CloseIcon";
 
 const UploadArea = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [image, setImage] = useState<File | null>();
   const [, setCdnUrl] = useState<string | null>(null);
 
@@ -26,7 +28,7 @@ const UploadArea = () => {
 
         // Set the CDN URL in state
         setCdnUrl(cdnImageUrl);
-        dispatch(setCoverImage(cdnImageUrl))
+        dispatch(setCoverImage(cdnImageUrl));
         console.log("Uploaded to CDN:", cdnImageUrl);
       } catch (error) {
         console.error("Failed to upload image:", error);
@@ -39,39 +41,56 @@ const UploadArea = () => {
   return (
     <>
       {image ? (
-        <div className="img-area" style={{ position: "relative" }}>
+        <div className="img-area box">
           <img
-            style={{ objectFit: "contain", width: "100%", height: "100%" }}
+            style={{ objectFit: "cover", width: "100%", height: "320px" }}
             src={URL.createObjectURL(image)}
             alt="image"
           />
           <div
-            style={{ position: "absolute", top: "-45px", right: "0" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              height: "auto",
+              padding: "26px",
+              color: "var(--red)",
+            }}
             onClick={() => setImage(null)}
           >
-            Delete
+            <CloseIcon /> <strong>Delete & reupload</strong>
           </div>
         </div>
       ) : (
-        <div
-          className="input-area"
-          onClick={selectFile}
-          style={{ borderRadius: "5px", border: "1px dashed #000" }}
-        >
-          <img src="/images/upload.png" alt="" />
-          <span className="cta">Upload cover image</span>
-          <span className="subtext">
-            16:9 ratio is recommended. Max image size 1mb
-          </span>
-          <input
-            type="file"
-            accept="image/*"
-            name=""
-            id="input"
-            onChange={handleUpload}
-            style={{ display: "none" }}
-          />
-        </div>
+        <Box title={"Upload cover image"}>
+          <div
+            style={{
+              paddingInline: "40px",
+              paddingTop: "60px",
+              paddingBottom: "56px",
+            }}
+          >
+            <div
+              className="input-area"
+              onClick={selectFile}
+              style={{ borderRadius: "5px", border: "1px dashed #000" }}
+            >
+              <img src="/images/upload.png" alt="" />
+              <span className="cta">Upload cover image</span>
+              <span className="subtext">
+                16:9 ratio is recommended. Max image size 1mb
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                name=""
+                id="input"
+                onChange={handleUpload}
+                style={{ display: "none" }}
+              />
+            </div>
+          </div>
+        </Box>
       )}
     </>
   );
