@@ -70,7 +70,7 @@ const PersonalInfo = () => {
   };
 
   const updateQuestion = (updatedQuestion: QuestionTemplate) => {
-    console.log("ne question", updatedQuestion);
+    console.log("new question", updatedQuestion);
     // Create a copy of personalInformation
     const updatedPersonalInfo = { ...personalInformation };
 
@@ -99,10 +99,6 @@ const PersonalInfo = () => {
     }
   };
 
-  useEffect(() => {
-    // console.log(personalInformation);
-    console.log(personalInformation);
-  }, [personalInfo]);
 
   useEffect(() => {
     dispatch(setPersonalInfo(personalInformation));

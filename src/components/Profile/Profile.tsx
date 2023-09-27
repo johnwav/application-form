@@ -72,15 +72,13 @@ const Profile = () => {
         (q) => q.id !== questionToDelete.id
       ),
     }));
-    // Dispatch the updated profileQuestions to Redux
-    // dispatch(setProfileQuestions(updatedProfileQuestions));
 
     questionToDelete && console.log(questionToDelete, "deleted");
   };
 
   // Function to handle updating a profile question
   const handleUpdateQuestion = (updatedQuestion: QuestionTemplate) => {
-    console.log("ne ques", updatedQuestion);
+    console.log("new ques", updatedQuestion);
     // Find the index of the question to be updated
 
     const updatedProfileInfo = { ...profileInformation };
@@ -102,7 +100,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    // Dispatch updated profileInformation to Redux
     dispatch(sendProfileInfo(profileInformation));
     console.log("dispatching", profileInformation);
   }, [profileInformation]);
