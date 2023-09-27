@@ -14,8 +14,12 @@ import generateUniqueId from "../../generateId";
 
 const AddQuestion = ({
   onSaveQuestion,
+  onDeleteQuestion,
+  editedQuestion,
 }: {
   onSaveQuestion: (question: QuestionTemplate) => void;
+  onDeleteQuestion: (question: QuestionTemplate) => void;
+  editedQuestion: QuestionTemplate
 }) => {
   const typeOptions = QuestionsTypeOptions.map((questionType) => ({
     value: questionType,
@@ -34,9 +38,11 @@ const AddQuestion = ({
     other: false,
   });
 
+
   return (
     <>
       <label>
+        {editedQuestion && 'this is an edit'}
         <h3>Type</h3>
         <Select
           defaultValue={null}
@@ -66,7 +72,7 @@ const AddQuestion = ({
       </label>
 
       <div className="btn-container">
-        <div onClick={null} className="delete-btn">
+        <div onClick={() => onDeleteQuestion(question)} className="delete-btn">
           <CloseIcon />
           Delete Question
         </div>
