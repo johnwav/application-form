@@ -1,18 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PersonalInformation, PersonalInformationTemplate } from '../types/types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PersonalInformation } from "../types/types";
 import {
   ApplicationFormState,
   // PersonalInformation,
   Profile,
   QuestionTemplate,
-} from '../types/types';
+} from "../types/types";
 
 const initialState: ApplicationFormState = {
   data: {
-    id: '',
-    type: 'applicationForm',
+    id: "",
+    type: "applicationForm",
     attributes: {
-      coverImage: '',
+      coverImage: "",
       personalInformation: {
         firstName: { internalUse: false, show: true },
         lastName: { internalUse: false, show: true },
@@ -38,7 +38,7 @@ const initialState: ApplicationFormState = {
 
 // Create a data slice
 const dataSlice = createSlice({
-  name: 'data',
+  name: "data",
   initialState,
   reducers: {
     setId: (state, action: PayloadAction<string>) => {
@@ -53,13 +53,24 @@ const dataSlice = createSlice({
     setProfile: (state, action: PayloadAction<Profile>) => {
       state.data.attributes.profile = { ...action.payload };
     },
-    setCustomisedQuestion: (state, action: PayloadAction<QuestionTemplate[]>) => {
+    setCustomisedQuestion: (
+      state,
+      action: PayloadAction<QuestionTemplate[]>
+    ) => {
       state.data.attributes.customisedQuestions = action.payload;
     },
-    setPersonalInformation: (state, action: PayloadAction<PersonalInformation>) => {
-      state.data.attributes.personalInformation = action.payload
+    setPersonalInformation: (
+      state,
+      action: PayloadAction<PersonalInformation>
+    ) => {
+      state.data.attributes.personalInformation = action.payload;
     },
-
+    setPersonalQuestions: (state, action: PayloadAction<QuestionTemplate>) => {
+      state.data.attributes.personalInformation.personalQuestions = [
+        ...state.data.attributes.personalInformation.personalQuestions,
+        action.payload,
+      ];
+    },
   },
 });
 
@@ -71,6 +82,7 @@ export const {
   setProfile,
   setCustomisedQuestion,
   setPersonalInformation,
+  setPersonalQuestions,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;
