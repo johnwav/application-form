@@ -6,10 +6,11 @@ import {
   Profile,
   QuestionTemplate,
 } from "../types/types";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState: ApplicationFormState = {
   data: {
-    id: "",
+    id: uuidv4(),
     type: "applicationForm",
     attributes: {
       coverImage: "",
@@ -74,6 +75,9 @@ const dataSlice = createSlice({
         action.payload,
       ];
     },
+    setApplicationForm: (state, action) => {
+      state.data = action.payload;
+    },
   },
 });
 
@@ -87,6 +91,7 @@ export const {
   setPersonalInformation,
   setPersonalQuestions,
   setProfileInformation,
+  setApplicationForm,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;
