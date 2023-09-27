@@ -57,47 +57,33 @@ const Profile = () => {
     setShowAddQuestion(false);
   };
 
-  const handleDeleteQuestion = (questionToDelete) => {
+  const handleDeleteQuestion = (questionToDelete: QuestionTemplate) => {
     setShowAddQuestion(false); // Close the AddQuestion component
 
     // Check if the question being deleted is the edited question
     if (editedQuestion && editedQuestion.id === questionToDelete.id) {
       setEditedQuestion(null); // Clear the edited question state
     }
+    // Remove the question from the profileQuestions array
 
-    // Remove the question from personalInformation state
     setProfileInformation((prev) => ({
       ...prev,
-      personalQuestions: prev.profileQuestions.filter(
+      profileQuestions: prev.profileQuestions.filter(
         (q) => q.id !== questionToDelete.id
       ),
     }));
+    // Dispatch the updated profileQuestions to Redux
+    // dispatch(setProfileQuestions(updatedProfileQuestions));
 
     questionToDelete && console.log(questionToDelete, "deleted");
   };
 
-  // Function to handle deleting a profile question
-  //   const handleDeleteQuestion = (questionToDelete: QuestionTemplate) => {
-  //     // Remove the question from the profileQuestions array
-  //     const updatedProfileQuestions = profileQuestions.filter(
-  //       (q) => q.id !== questionToDelete.id
-  //     );
-
-  //     // Dispatch the updated profileQuestions to Redux
-  //     // dispatch(setProfileQuestions(updatedProfileQuestions));
-
-  //     // Check if the question being deleted is the edited question
-  //     if (editedQuestion && editedQuestion.id === questionToDelete.id) {
-  //       setEditedQuestion(null); // Clear the edited question state
-  //     }
-  //   };
-
   // Function to handle updating a profile question
   const handleUpdateQuestion = (updatedQuestion: QuestionTemplate) => {
-    console.log('ne ques',updatedQuestion)
+    console.log("ne ques", updatedQuestion);
     // Find the index of the question to be updated
 
-    const updatedProfileInfo = {...profileInformation}
+    const updatedProfileInfo = { ...profileInformation };
 
     const questionIndex = updatedProfileInfo.profileQuestions.findIndex(
       (q) => q.id === updatedQuestion.id
@@ -110,7 +96,7 @@ const Profile = () => {
       // Update the question at the specified index with the new question
       updatedProfileQuestions[questionIndex] = updatedQuestion;
 
-      updatedProfileInfo.profileQuestions = updatedProfileQuestions
+      updatedProfileInfo.profileQuestions = updatedProfileQuestions;
       setProfileInformation(updatedProfileInfo);
     }
   };
@@ -118,7 +104,7 @@ const Profile = () => {
   useEffect(() => {
     // Dispatch updated profileInformation to Redux
     dispatch(sendProfileInfo(profileInformation));
-    console.log('dispatching',profileInformation);
+    console.log("dispatching", profileInformation);
   }, [profileInformation]);
 
   return (
@@ -149,22 +135,37 @@ const Profile = () => {
             >
               Internal
             </Checkbox>
-            <Switch
-              defaultChecked={profileInformation[item].show}
-              onChange={(checked) => handleSwitchChange(item, checked)}
-            />
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Switch
+                defaultChecked={profileInformation[item].show}
+                onChange={(checked) => handleSwitchChange(item, checked)}
+              />
+              {profileInformation[item].show ? "Show" : "Hide"}
+            </div>
           </div>
         </label>
       ))}
 
       {/* Map and display existing profile questions */}
       {profileQuestions.map((question, index) => (
-        <Question
+        <div
           key={index}
-          question={question}
-          onDeleteQuestion={handleDeleteQuestion}
-          onEditQuestion={(newQuestion) => handleUpdateQuestion(newQuestion)}
-        />
+          style={{
+            borderBottom:
+              index === profileQuestions.length - 1
+                ? "none"
+                : "1px solid var(--grey)",
+            paddingBottom: "20px",
+            borderTop: index === 0 ? "1px solid var(--grey)" : "none",
+          }}
+        >
+          <Question
+            key={question.id}
+            question={question}
+            onDeleteQuestion={handleDeleteQuestion}
+            onEditQuestion={(newQuestion) => handleUpdateQuestion(newQuestion)}
+          />
+        </div>
       ))}
 
       {showAddQuestion && (
