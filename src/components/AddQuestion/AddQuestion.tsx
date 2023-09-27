@@ -2,12 +2,9 @@ import {
   Checkbox,
   Input,
   Select,
-  // Checkbox
 } from "antd";
 import { QuestionsTypeOptions } from "./Items";
 import CloseIcon from "../../assets/icons/CloseIcon";
-// import OrderedList from "../../assets/icons/OrderedList";
-// import PlusIcon from "../../assets/icons/PlusIcon";
 import "./AddQuestion.css";
 import { QuestionTemplate } from "../../types/types";
 import { useState } from "react";
@@ -31,7 +28,6 @@ const AddQuestion = ({
 
   const { uniqueId } = generateUniqueId();
 
-  // Local state for question type and question text
   const [questionType, setQuestionType] = useState(editedQuestion?.type || "");
   const [questionText, setQuestionText] = useState(
     editedQuestion?.question || ""
@@ -63,16 +59,6 @@ const AddQuestion = ({
     // Call the onSaveQuestion callback with the updated question
     onSaveQuestion(updatedQuestion);
   };
-  // Handle adding a new choice to the choices array
-  // const handleAddChoice = () => {
-  //   console.log("add choice clicked");
-  //   // Create a new choices array by copying the existing choices and adding the new choice
-  //   setChoiceText("");
-  //   const updatedChoices = [...choices, choiceText];
-
-  //   // Update the state with the new choices array and reset the choiceText
-  //   setChoices(updatedChoices);
-  // };
 
   const handleAddChoice = () => {
     // Create a new choices array by copying the existing choices and adding the new choice
@@ -242,8 +228,18 @@ const AddQuestion = ({
           onClick={() => onDeleteQuestion(editedQuestion)}
           className="delete-btn"
         >
-          <CloseIcon />
-          Delete Question
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              height: "auto",
+              paddingBlock: "26px",
+              color: "var(--red)",
+            }}
+          >
+            <CloseIcon /> <strong>Delete Question</strong>
+          </div>
         </div>
         <button onClick={handleSaveClick} className="save-btn">
           Save
