@@ -4,3 +4,10 @@
     gap: 64px;
     padding-block: 64px;
 }
+
+.create-form {
+    max-width: 595px;
+    padding: 10px;
+    background: var(--green);
+    color: white;
+}
