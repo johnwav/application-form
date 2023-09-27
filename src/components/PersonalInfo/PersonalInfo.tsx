@@ -161,24 +161,40 @@ const PersonalInfo = () => {
               >
                 Internal
               </Checkbox>
-              <Switch
-                defaultChecked={personalInformation[item].show}
-                onChange={(checked) => handleSwitchChange(item, checked)}
-              />
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                <Switch
+                  defaultChecked={personalInformation[item].show}
+                  onChange={(checked) => handleSwitchChange(item, checked)}
+                />
+                {personalInformation[item].show ? "Show" : "Hide"}
+              </div>
             </div>
           </label>
         ))}
 
         {personalInformation.personalQuestions.map((question, index) => (
-          <Question
-            onDeleteQuestion={handleDeleteQuestion}
+          <div
             key={index}
-            question={question}
-            onEditQuestion={(newQuestion) => {
-              setEditedQuestion(question);
-              updateQuestion(newQuestion);
+            style={{
+              borderBottom:
+                index === personalInformation.personalQuestions.length - 1
+                  ? "none"
+                  : "1px solid var(--grey)",
+              paddingBottom: "20px",
+              borderTop: index === 0 ? "1px solid var(--grey)" : "none",
             }}
-          />
+          >
+            <Question
+              onDeleteQuestion={handleDeleteQuestion}
+              key={index}
+              question={question}
+              onEditQuestion={(newQuestion) => {
+                setEditedQuestion(question);
+                updateQuestion(newQuestion);
+              }}
+            />
+          </div>
         ))}
 
         {showAddQuestion && (
@@ -214,8 +230,10 @@ const PersonalInfo = () => {
             style={{ display: "flex", gap: "20px" }}
             className="add"
           >
-            <PlusIcon />
-            <strong>Add a Question</strong>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <PlusIcon />
+              <strong>Add a Question</strong>
+            </div>
           </div>
         </label>
       </div>
