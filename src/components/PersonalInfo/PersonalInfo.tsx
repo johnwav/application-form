@@ -4,13 +4,15 @@ import "./PersonalInfo.css";
 import { Checkbox, Switch } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setPersonalInformation as setPersonalInfo, setPersonalQuestions } from "../../data/dataSlice";
+import { setPersonalInformation as setPersonalInfo } from "../../data/dataSlice";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddQuestion from "../AddQuestion/AddQuestion";
+import Question from "../Question/Question";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
-  const [showQuestion, setShowQuestion] = useState(false);
+  const [showAddQuestion, setShowAddQuestion] = useState(false);
+  const [editedQuestion, setEditedQuestion] = useState(null);
   const personalInfo = useSelector(
     (state: RootState) => state.data.data.attributes.personalInformation
   );
@@ -44,23 +46,33 @@ const PersonalInfo = () => {
     dispatch(setPersonalInfo(personalInformation));
   };
 
-  // Callback function to handle saving a question
-  const handleSaveQuestion = (newQuestion) => {
-    // Push the newQuestion to personalInformation state
+
+  //@ts-ignore
+  const handleDeleteQuestion = (questionToDelete) => {
+    setShowAddQuestion(false); // Close the AddQuestion component
+
+    // Check if the question being deleted is the edited question
+    if (editedQuestion && editedQuestion.id === questionToDelete.id) {
+      setEditedQuestion(null); // Clear the edited question state
+    }
+
+    // Remove the question from personalInformation state
     setPersonalInformation((prev) => ({
       ...prev,
-      personalQuestions: [...prev.personalQuestions, newQuestion],
+      personalQuestions: prev.personalQuestions.filter((q) => q.id !== questionToDelete.id),
     }));
-    // Close the AddQuestion component
-    setShowQuestion(false);
-    dispatch(setPersonalQuestions(newQuestion))
+
+    console.log(questionToDelete, 'deleted');
   };
 
-  // useEffect(() => {
-  //   console.log(personalInformation);
-  // }, [personalInformation]);
+  useEffect(() => {
+    // console.log(personalInformation);
+    console.log(personalInformation);
+  }, [personalInfo]);
 
-  console.log(personalInfo)
+  useEffect(() => {
+    dispatch(setPersonalInfo(personalInformation));
+  }, [personalInformation]);
 
   return (
     <>
@@ -121,7 +133,34 @@ const PersonalInfo = () => {
             </div>
           </label>
         ))}
-        {showQuestion && <AddQuestion onSaveQuestion={handleSaveQuestion} />}
+
+        {personalInformation.personalQuestions.map((question, index) => (
+          <Question
+            onDeleteQuestion={handleDeleteQuestion}
+            key={index}
+            question={question}
+            onEditQuestion={() => {
+              setEditedQuestion(question);
+            }}
+          />
+        ))}
+
+        {showAddQuestion && (
+          <AddQuestion
+            onSaveQuestion={(newQuestion) => {
+              // Push the newQuestion to personalInformation state
+              setPersonalInformation((prev) => ({
+                ...prev,
+                personalQuestions: [...prev.personalQuestions, newQuestion],
+              }));
+              // Close the AddQuestion component
+              setShowAddQuestion(false);
+            }}
+            editedQuestion={editedQuestion} // Pass the edited question here
+            onDeleteQuestion={handleDeleteQuestion}
+          />
+        )}
+
         <label
           style={{
             marginTop: "50px",
@@ -129,7 +168,10 @@ const PersonalInfo = () => {
           }}
         >
           <div
-            onClick={() => setShowQuestion(true)}
+            onClick={() => {
+              setEditedQuestion(null); // Clear any edited question
+              setShowAddQuestion(true);
+            }}
             style={{ display: "flex", gap: "20px" }}
             className="add"
           >
