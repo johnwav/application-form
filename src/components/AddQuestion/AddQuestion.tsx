@@ -19,7 +19,7 @@ const AddQuestion = ({
 }: {
   onSaveQuestion: (question: QuestionTemplate) => void;
   onDeleteQuestion: (question: QuestionTemplate) => void;
-  editedQuestion: QuestionTemplate
+  editedQuestion: QuestionTemplate;
 }) => {
   const typeOptions = QuestionsTypeOptions.map((questionType) => ({
     value: questionType,
@@ -28,31 +28,52 @@ const AddQuestion = ({
 
   const { uniqueId } = generateUniqueId();
 
-  const [question] = useState<QuestionTemplate>({
-    id: uniqueId, // You should generate a unique id for the question
-    type: null,
-    question: "",
-    choices: [],
-    maxChoice: 0,
-    disqualify: false,
-    other: false,
-  });
+  // Local state for question type and question text
+  const [questionType, setQuestionType] = useState(editedQuestion?.type || "");
+  const [questionText, setQuestionText] = useState(editedQuestion?.question || "");
 
+  // Handle change in question type
+  const handleQuestionTypeChange = (value) => {
+    setQuestionType(value);
+  };
+
+  // Handle change in question text
+  const handleQuestionTextChange = (e) => {
+    setQuestionText(e.target.value);
+  };
+
+  // Handle save button click
+  const handleSaveClick = () => {
+    // Create a new question object with the updated type and text
+
+    const updatedQuestion: QuestionTemplate = {
+      id: editedQuestion?.id || uniqueId, // Generate a unique id for the question
+      type: questionType,
+      question: questionText,
+      choices: [],
+      maxChoice: 0,
+      disqualify: false,
+      other: false,
+    };
+
+    // Call the onSaveQuestion callback with the updated question
+    onSaveQuestion(updatedQuestion);
+  };
 
   return (
     <>
       <label>
-        {editedQuestion && 'this is an edit'}
+        {editedQuestion && "this is an edit"}
         <h3>Type</h3>
         <Select
-          defaultValue={null}
+          defaultValue={questionType}
           style={{
             width: "100%",
             height: "68px",
             border: "1px solid black",
             borderRadius: "5px",
           }}
-          onChange={null}
+          onChange={handleQuestionTypeChange}
           options={typeOptions}
         />
       </label>
@@ -66,17 +87,17 @@ const AddQuestion = ({
             paddingInline: "24px",
           }}
           placeholder="Type here"
-          value={null}
-          onChange={null}
+          value={questionText}
+          onChange={handleQuestionTextChange}
         />
       </label>
 
       <div className="btn-container">
-        <div onClick={() => onDeleteQuestion(question)} className="delete-btn">
+        <div onClick={() => onDeleteQuestion(editedQuestion)} className="delete-btn">
           <CloseIcon />
           Delete Question
         </div>
-        <button onClick={() => onSaveQuestion(question)} className="save-btn">
+        <button onClick={handleSaveClick} className="save-btn">
           Save
         </button>
       </div>

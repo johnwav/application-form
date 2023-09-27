@@ -8,6 +8,7 @@ import { setPersonalInformation as setPersonalInfo } from "../../data/dataSlice"
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddQuestion from "../AddQuestion/AddQuestion";
 import Question from "../Question/Question";
+import { QuestionTemplate } from "../../types/types";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,6 @@ const PersonalInfo = () => {
     dispatch(setPersonalInfo(personalInformation));
   };
 
-
   //@ts-ignore
   const handleDeleteQuestion = (questionToDelete) => {
     setShowAddQuestion(false); // Close the AddQuestion component
@@ -59,10 +59,42 @@ const PersonalInfo = () => {
     // Remove the question from personalInformation state
     setPersonalInformation((prev) => ({
       ...prev,
-      personalQuestions: prev.personalQuestions.filter((q) => q.id !== questionToDelete.id),
+      personalQuestions: prev.personalQuestions.filter(
+        (q) => q.id !== questionToDelete.id
+      ),
     }));
 
-    console.log(questionToDelete, 'deleted');
+    questionToDelete && console.log(questionToDelete, "deleted");
+  };
+
+  const updateQuestion = (updatedQuestion: QuestionTemplate) => {
+    console.log('ne question',updatedQuestion)
+    // Create a copy of personalInformation
+    const updatedPersonalInfo = { ...personalInformation };
+
+    // Find the index of the question to be updated
+    const questionIndex = updatedPersonalInfo.personalQuestions.findIndex(
+      (q) => q.id === updatedQuestion.id
+    );
+
+    console.log(questionIndex)
+
+    if (questionIndex !== -1) {
+      // Create a new array with the updated question
+      const updatedQuestions = [...updatedPersonalInfo.personalQuestions];
+      updatedQuestions[questionIndex] = updatedQuestion;
+
+      // Update the copy of personalInformation with the new questions array
+      updatedPersonalInfo.personalQuestions = updatedQuestions;
+
+      // Update the state with the new personalInformation
+      setPersonalInformation(updatedPersonalInfo);
+
+      // Dispatch the updated personalInformation to Redux
+      dispatch(setPersonalInfo(updatedPersonalInfo));
+    } else {
+      console.log("not found");
+    }
   };
 
   useEffect(() => {
@@ -139,8 +171,10 @@ const PersonalInfo = () => {
             onDeleteQuestion={handleDeleteQuestion}
             key={index}
             question={question}
-            onEditQuestion={() => {
+            onEditQuestion={(newQuestion) => {
               setEditedQuestion(question);
+              //////
+              updateQuestion(newQuestion);
             }}
           />
         ))}
@@ -153,6 +187,9 @@ const PersonalInfo = () => {
                 ...prev,
                 personalQuestions: [...prev.personalQuestions, newQuestion],
               }));
+
+              setEditedQuestion(newQuestion);
+
               // Close the AddQuestion component
               setShowAddQuestion(false);
             }}

@@ -17,10 +17,10 @@ const Question = ({ question, onEditQuestion, onDeleteQuestion }) => {
     <>
       {editOpen ? (
         <AddQuestion
-          onSaveQuestion={(question) => {
+          onSaveQuestion={(editedQuestion) => {
             // Handle saving the edited question
             // You can pass the editedQuestion to the parent component
-            onEditQuestion(question);
+            onEditQuestion(editedQuestion);
             setEditOpen(false); // Close the edit mode
           }}
           onDeleteQuestion={handleDelete} // You can implement deletion if needed
@@ -29,7 +29,7 @@ const Question = ({ question, onEditQuestion, onDeleteQuestion }) => {
       ) : (
         <div className="edit-question">
           <div className="tcontain" style={{ fontSize: "1.17em" }}>
-            <small className="type">{question.type} type</small>
+            <small className="type">{question?.type}</small>
             <h3
               style={{
                 marginBlock: 5,
@@ -37,7 +37,7 @@ const Question = ({ question, onEditQuestion, onDeleteQuestion }) => {
                 textOverflow: "ellipsis",
               }}
             >
-              {question.id} titlesssss
+              {question?.question}
             </h3>
           </div>
           <div></div>
