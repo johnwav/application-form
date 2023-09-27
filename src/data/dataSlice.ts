@@ -65,6 +65,9 @@ const dataSlice = createSlice({
     ) => {
       state.data.attributes.personalInformation = action.payload;
     },
+    setProfileInformation: (state, action: PayloadAction<Profile>) => {
+      state.data.attributes.profile = action.payload;
+    },
     setPersonalQuestions: (state, action: PayloadAction<QuestionTemplate>) => {
       state.data.attributes.personalInformation.personalQuestions = [
         ...state.data.attributes.personalInformation.personalQuestions,
@@ -83,6 +86,7 @@ export const {
   setCustomisedQuestion,
   setPersonalInformation,
   setPersonalQuestions,
+  setProfileInformation,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;

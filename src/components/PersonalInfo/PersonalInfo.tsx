@@ -9,6 +9,7 @@ import PlusIcon from "../../assets/icons/PlusIcon";
 import AddQuestion from "../AddQuestion/AddQuestion";
 import Question from "../Question/Question";
 import { QuestionTemplate } from "../../types/types";
+import toTitleCase from "../../toTitleCase";
 
 const PersonalInfo = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const PersonalInfo = () => {
     "dateOfBirth",
     "gender",
   ];
+
   const handleCheckboxChange = (attributeName, updatedData) => {
     setPersonalInformation((prev) => ({
       ...prev,
@@ -68,7 +70,7 @@ const PersonalInfo = () => {
   };
 
   const updateQuestion = (updatedQuestion: QuestionTemplate) => {
-    console.log('ne question',updatedQuestion)
+    console.log("ne question", updatedQuestion);
     // Create a copy of personalInformation
     const updatedPersonalInfo = { ...personalInformation };
 
@@ -77,10 +79,10 @@ const PersonalInfo = () => {
       (q) => q.id === updatedQuestion.id
     );
 
-    console.log(questionIndex)
+    console.log(questionIndex);
 
     if (questionIndex !== -1) {
-      // Create a new array with the updated question
+      // create a new array with the updated question
       const updatedQuestions = [...updatedPersonalInfo.personalQuestions];
       updatedQuestions[questionIndex] = updatedQuestion;
 
@@ -143,13 +145,14 @@ const PersonalInfo = () => {
           <label
             key={index}
             style={{
-              borderBottom: "1px solid var(--grey)",
+              borderBottom:
+                index === info.length - 1 ? "none" : "1px solid var(--grey)", // Apply borderBottom only if it's not the last element
               paddingBottom: "20px",
             }}
             className="container"
           >
             <div className="left">
-              <h3>{item}</h3>
+              <h3>{toTitleCase(item)}</h3>
             </div>
             <div className="right">
               <Checkbox
@@ -173,7 +176,6 @@ const PersonalInfo = () => {
             question={question}
             onEditQuestion={(newQuestion) => {
               setEditedQuestion(question);
-              //////
               updateQuestion(newQuestion);
             }}
           />

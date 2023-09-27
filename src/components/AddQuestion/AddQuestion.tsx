@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   Input,
   Select,
   // Checkbox
@@ -11,6 +12,8 @@ import "./AddQuestion.css";
 import { QuestionTemplate } from "../../types/types";
 import { useState } from "react";
 import generateUniqueId from "../../generateId";
+import OrderedList from "../../assets/icons/OrderedList";
+import PlusIcon from "../../assets/icons/PlusIcon";
 
 const AddQuestion = ({
   onSaveQuestion,
@@ -30,17 +33,18 @@ const AddQuestion = ({
 
   // Local state for question type and question text
   const [questionType, setQuestionType] = useState(editedQuestion?.type || "");
-  const [questionText, setQuestionText] = useState(editedQuestion?.question || "");
-
-  // Handle change in question type
-  const handleQuestionTypeChange = (value) => {
-    setQuestionType(value);
-  };
-
-  // Handle change in question text
-  const handleQuestionTextChange = (e) => {
-    setQuestionText(e.target.value);
-  };
+  const [questionText, setQuestionText] = useState(
+    editedQuestion?.question || ""
+  );
+  const [disqualify, setDisqualify] = useState(
+    editedQuestion?.disqualify || false
+  );
+  const [choices, setChoices] = useState<string[]>(
+    editedQuestion?.choices || [""]
+  );
+  const [choiceText, setChoiceText] = useState<string>("");
+  const [other, setOther] = useState(editedQuestion?.other || false);
+  const [maxChoice, setMaxChoice] = useState(editedQuestion?.maxChoice || 0);
 
   // Handle save button click
   const handleSaveClick = () => {
@@ -50,14 +54,30 @@ const AddQuestion = ({
       id: editedQuestion?.id || uniqueId, // Generate a unique id for the question
       type: questionType,
       question: questionText,
-      choices: [],
-      maxChoice: 0,
-      disqualify: false,
-      other: false,
+      choices: choices,
+      maxChoice: maxChoice,
+      disqualify: disqualify,
+      other: other,
     };
 
     // Call the onSaveQuestion callback with the updated question
     onSaveQuestion(updatedQuestion);
+  };
+  // Handle adding a new choice to the choices array
+  // const handleAddChoice = () => {
+  //   console.log("add choice clicked");
+  //   // Create a new choices array by copying the existing choices and adding the new choice
+  //   setChoiceText("");
+  //   const updatedChoices = [...choices, choiceText];
+
+  //   // Update the state with the new choices array and reset the choiceText
+  //   setChoices(updatedChoices);
+  // };
+
+  const handleAddChoice = () => {
+    // Create a new choices array by copying the existing choices and adding the new choice
+    setChoices([...choices, choiceText]);
+    setChoiceText(""); // Clear the input field
   };
 
   return (
@@ -73,7 +93,10 @@ const AddQuestion = ({
             border: "1px solid black",
             borderRadius: "5px",
           }}
-          onChange={handleQuestionTypeChange}
+          onChange={(value) => {
+            setChoices(editedQuestion?.choices || [""]);
+            setQuestionType(value);
+          }}
           options={typeOptions}
         />
       </label>
@@ -88,12 +111,137 @@ const AddQuestion = ({
           }}
           placeholder="Type here"
           value={questionText}
-          onChange={handleQuestionTextChange}
+          onChange={(e) => setQuestionText(e.target.value)}
         />
       </label>
 
+      {questionType === "Yes/No" && (
+        // Conditionally render the disqualify checkbox when the type is "Yes/No"
+        <label style={{ marginLeft: "20px" }}>
+          <Checkbox
+            style={{ paddingTop: "20px" }}
+            checked={disqualify}
+            onChange={(e) => setDisqualify(e.target.checked)}
+          >
+            <span className="option">
+              Disqualify Candidate if the answer is no
+            </span>
+          </Checkbox>
+        </label>
+      )}
+
+      {questionType === "Dropdown" && (
+        // Conditionally render the choice section when the type is "Dropdown"
+        <label>
+          {choices.map((choice, index) => (
+            <div key={index}>
+              <h4>Choice</h4>
+
+              <div className="choice-container">
+                <OrderedList />
+
+                <Input
+                  style={{
+                    height: "68px",
+                    borderRadius: "5px",
+                    border: "1px solid #000",
+                    paddingInline: "24px",
+                  }}
+                  placeholder="Type here"
+                  value={choice}
+                  onChange={(e) => {
+                    const updatedChoices = [...choices];
+                    updatedChoices[index] = e.target.value;
+                    setChoices(updatedChoices);
+                  }}
+                ></Input>
+                <div onClick={handleAddChoice}>
+                  <PlusIcon />
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <Checkbox
+            style={{ paddingTop: "20px" }}
+            checked={other}
+            onChange={(e) => setOther(e.target.checked)}
+          >
+            <span className="option">Enable "Other Option"</span>
+          </Checkbox>
+        </label>
+      )}
+
+      {questionType === "Multiple choice" && (
+        // Conditionally render the choice section when the type is "Dropdown"
+        <label>
+          {choices.map((choice, index) => (
+            <div key={index}>
+              <h4>Choice</h4>
+
+              <div className="choice-container">
+                <OrderedList />
+
+                <Input
+                  style={{
+                    height: "68px",
+                    borderRadius: "5px",
+                    border: "1px solid #000",
+                    paddingInline: "24px",
+                  }}
+                  placeholder="Type here"
+                  value={choice}
+                  onChange={(e) => {
+                    const updatedChoices = [...choices];
+                    updatedChoices[index] = e.target.value;
+                    setChoices(updatedChoices);
+                  }}
+                ></Input>
+                <div onClick={handleAddChoice}>
+                  <PlusIcon />
+                </div>
+              </div>
+            </div>
+          ))}
+          <Checkbox
+            style={{ paddingTop: "20px" }}
+            checked={other}
+            onChange={(e) => setOther(e.target.checked)}
+          >
+            <span className="option">Enable "Other Option"</span>
+          </Checkbox>
+          <div className="max-choice">
+            <h3>Max choice allowed</h3>
+            <Input
+              type="number"
+              style={{
+                height: "68px",
+                borderRadius: "5px",
+                border: "1px solid #000",
+                paddingInline: "24px",
+              }}
+              placeholder="Enter number of choice allowed here"
+              value={maxChoice}
+              onChange={(e) => {
+                const inputValue = parseInt(e.target.value, 10); // Parse the input value as an integer
+                if (!isNaN(inputValue)) {
+                  // Check if the parsed value is a valid number
+                  setMaxChoice(inputValue);
+                } else {
+                  // Handle the case where the input is not a valid number
+                  setMaxChoice(0); // You can set it to an empty string or some default value
+                }
+              }}
+            ></Input>
+          </div>
+        </label>
+      )}
+
       <div className="btn-container">
-        <div onClick={() => onDeleteQuestion(editedQuestion)} className="delete-btn">
+        <div
+          onClick={() => onDeleteQuestion(editedQuestion)}
+          className="delete-btn"
+        >
           <CloseIcon />
           Delete Question
         </div>
