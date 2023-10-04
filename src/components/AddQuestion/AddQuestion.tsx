@@ -1,8 +1,4 @@
-import {
-  Checkbox,
-  Input,
-  Select,
-} from "antd";
+import { Checkbox, Input, Select } from "antd";
 import { QuestionsTypeOptions } from "./Items";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import "./AddQuestion.css";
@@ -41,6 +37,15 @@ const AddQuestion = ({
   const [choiceText, setChoiceText] = useState<string>("");
   const [other, setOther] = useState(editedQuestion?.other || false);
   const [maxChoice, setMaxChoice] = useState(editedQuestion?.maxChoice || 0);
+
+  const validateQuestion = () => {
+    const bool = choices.every((choice) => Boolean(choice));
+    if (!questionText || !questionType || !bool) {
+      alert("Question & Question type cannot be empty");
+      return;
+    }
+    handleSaveClick();
+  };
 
   // Handle save button click
   const handleSaveClick = () => {
@@ -241,7 +246,7 @@ const AddQuestion = ({
             <CloseIcon /> <strong>Delete Question</strong>
           </div>
         </div>
-        <button onClick={handleSaveClick} className="save-btn">
+        <button onClick={validateQuestion} className="save-btn">
           Save
         </button>
       </div>

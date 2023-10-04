@@ -57,7 +57,9 @@ const PersonalInfo = () => {
     if (editedQuestion && editedQuestion.id === questionToDelete.id) {
       setEditedQuestion(null); // Clear the edited question state
     }
-
+    else {
+      questionToDelete = editedQuestion;
+    }
     // Remove the question from personalInformation state
     setPersonalInformation((prev) => ({
       ...prev,
@@ -98,7 +100,6 @@ const PersonalInfo = () => {
       console.log("not found");
     }
   };
-
 
   useEffect(() => {
     dispatch(setPersonalInfo(personalInformation));

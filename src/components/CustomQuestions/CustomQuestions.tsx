@@ -31,6 +31,8 @@ const CustomQuestions = () => {
       // Check if the question being deleted is the edited question
       if (editedQuestion && editedQuestion.id === questionToDelete.id) {
         setEditedQuestion(null); // Clear the edited question state
+      } else {
+        questionToDelete = editedQuestion;
       }
       // Remove the question from the profileQuestions array
 
